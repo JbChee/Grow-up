@@ -1,0 +1,67 @@
+{% extends 'goods/index.html' %}
+
+{% load static from staticfiles %}
+
+
+{% block search %}
+    <div class="search_bar clearfix">
+        <a href="/" class="logo fl"><img src="{% static 'images/logo.png' %}"></a>
+        <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;{{ title }}</div>
+        <div class="search_con fr">
+            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+            <input type="button" class="input_btn fr" name="" value="搜索">
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block user_unique %}
+    <div class="main_con clearfix">
+        <div class="left_menu_con clearfix">
+            <h3>用户中心</h3>
+            <ul>
+                <li><a href="/user_center_info/" class="active">· 个人信息</a></li>
+                <li><a href="/user_center_order/">· 全部订单</a></li>
+                <li><a href="/user_center_site/">· 收货地址</a></li>
+            </ul>
+        </div>
+        <div class="right_content clearfix">
+            <div class="info_con clearfix">
+                <h3 class="common_title2">基本信息</h3>
+                <ul class="user_info_list">
+                    <li><span>用户名：</span>{{ user.uname }}</li>
+                    {% if user.useraddressinfo_set.all %}
+                        <li><span>联系方式：</span>{{ user.useraddressinfo_set.all.0.uphone }}</li>
+                        <li><span>联系地址：</span>{{ user.useraddressinfo_set.all.0.uaddress }}</li>
+                    {% else %}
+                        <li><span>联系方式：</span>暂无</li>
+                        <li><span>联系地址：</span>暂无</li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+            <h3 class="common_title2">最近浏览</h3>
+            <div class="has_view_list">
+                <ul class="goods_type_list clearfix">
+                    {% for good in goods_list %}
+
+                        <li>
+                            <a href="/detail{{ good.id }}"><img src="/static/images/{{ good.gpic }}"></a>
+                            <h4><a href="/detail{{ good.id }}">{{ good.gtitle }}</a></h4>
+                            <div class="operate">
+                                <span class="prize">￥{{ good.gprice }}</span>
+                                <span class="unit">{{ good.gprice }}/{{ good.gunit }}</span>
+                                <a href="#" class="add_goods" title="加入购物车"></a>
+                            </div>
+                        </li>
+                    {% endfor %}
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

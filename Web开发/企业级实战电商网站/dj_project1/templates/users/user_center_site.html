@@ -1,0 +1,78 @@
+{% extends 'users/user_center_info.html' %}
+
+{% block unique_js %}
+
+
+    <script>
+        $(function () {
+            if ({{ err_msg }} == 1
+        )
+            {
+                $('.error_addr').css({'color': 'red'}).html('请填写收货信息！')
+            }
+            if ({{ err_msg }} == 2
+        )
+            {
+                $('.error_addr').css({'color': 'green'}).html('提交成功！')
+            }
+
+        })
+
+    </script>
+{% endblock %}
+
+{% block user_unique %}
+
+    <div class="main_con clearfix">
+        <div class="left_menu_con clearfix">
+            <h3>用户中心</h3>
+            <ul>
+                <li><a href="/user_center_info/">· 个人信息</a></li>
+                <li><a href="/user_center_order/">· 全部订单</a></li>
+                <li><a href="/user_center_site/" class="active">· 收货地址</a></li>
+            </ul>
+        </div>
+        <div class="right_content clearfix">
+            <h3 class="common_title2">收货地址</h3>
+            <div class="site_con">
+                <dl>
+                    <dt>收件人：</dt>
+                    <dd>{{ user.useraddressinfo_set.all.0.uname }}</dd>
+                    <dt>当前地址：</dt>
+                    {% for foo in user.useraddressinfo_set.all %}
+                       <dd> <input type="checkbox">{{ foo.uaddress }} {{ foo.uphone }}</dd>
+                    {% endfor %}
+{#                    <dd>{{ user.useraddressinfo_set.all.0.uaddress }} {{ user.useraddressinfo_set.all.0.uphone }}</dd>#}
+
+
+                </dl>
+            </div>
+            <h3 class="common_title2">编辑地址</h3>
+            <div class="site_con">
+                <form action="/user_center_site/" method="post">
+                    {% csrf_token %}
+                    <div class="form_group">
+                        <label>收件人：</label>
+                        <input type="text" name="uname"><span class="error_addr"></span>
+                    </div>
+                    <div class="form_group form_group2">
+                        <label>详细地址：</label>
+                        <textarea class="site_area" name="text"></textarea><span class="error_addr"></span>
+                    </div>
+                    <div class="form_group">
+                        <label>邮编：</label>
+                        <input type="text" name="postcard"><span class="error_addr"></span>
+                    </div>
+                    <div class="form_group">
+                        <label>手机：</label>
+                        <input type="text" name="uphone"><span class="error_addr"></span>
+                    </div>
+
+                    <input type="submit" name="" value="提交" class="info_submit">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

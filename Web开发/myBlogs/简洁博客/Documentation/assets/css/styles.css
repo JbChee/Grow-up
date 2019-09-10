@@ -1,0 +1,257 @@
+/* Style CSS */
+
+/* ------------------------------------------ */
+/* TEXT AND FONTS */
+/* ------------------------------------------ */
+body {
+    font-family: 'Lato';
+    font-size: 14px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    color: #253858;
+    margin-bottom: .8rem;
+    position: relative;
+    font-family: 'Raleway', sans-serif;
+}
+
+hr {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-color: #0054d1;
+	opacity: 0.2;
+}
+
+a {
+    display: block;
+    padding: .125rem 0;
+    color: #586069;
+    text-decoration: none;
+}
+
+a:hover, a.active, .active > a {
+    color: #0054D1!important;
+}
+
+ul, li {
+    list-style-type: none;
+    padding: 0;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.lead {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+/* ------------------------------------------ */
+/* NAVIGATION */
+/* ------------------------------------------ */
+
+.nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    height: 100vh;
+    z-index: 1;
+    background: #f5f5f5;
+    transition: all 0.3s;
+    box-shadow: 3px 0 5px rgba(0,0,0,0.03);
+    border-right: 1px solid #e4e8ec;
+}
+
+.nav-header {
+    display: block;
+    text-align: center;
+    top: 0;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e4e8ec;
+}
+
+.nav-header h3 {
+    font-weight: 700;
+    font-size: 19px;
+    display: inline-block;
+    margin: 0 8px 0 0;
+}
+
+.nav-header h3 span {
+    font-weight: 300;
+}
+
+.nav-menu {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 18px;
+    padding: 0 1.5rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.nav-menu li {
+    padding: 5px 0;
+}
+
+.nav-menu li ul {
+    padding-left: 1rem;
+    border-left: 1px solid #0054D1;
+    margin-top: 0.5rem;
+}
+
+.nav-menu li ul li {
+    position:relative;
+}
+
+.nav-menu li ul li.active:before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius:50%;
+    left: calc( -1rem - 4.5px );
+    margin-top: 0.7rem;
+    top: 0rem;
+    display:block;
+    background: #0054D1;
+}
+
+.nav-menu li ul li a {
+    color: #aaa;
+}
+
+/* ------------------------------------------ */
+/* CONTENT */
+/* ------------------------------------------ */
+
+.content {
+    padding: 0 0px 0 270px;
+}
+
+.content-wrapper {
+    padding: 40px 15px;
+}
+
+.folder-structure {
+    display:block;
+    background-color: #fafafa;
+    margin: 24px 0;
+    padding: 20px 10px 10px;
+}
+
+.folder-structure>ul {
+    display: block;
+}
+
+.folder-structure ul {
+    list-style: none;
+    padding-left: 25px;
+    display: block;
+}
+
+.folder-structure li {
+    padding: 4px 0;
+    line-height: 24px;
+}
+
+.folder-structure i {
+    margin-left: 24px;
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 20px;
+    color: #b4b7b8;
+    cursor: default;
+    transition: color .4s ease;
+}
+
+.folder-structure .is-folder>span {
+    font-family: Lato;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    display: inline-block;
+    min-width: 120px;
+}
+
+.updates {
+	font-weight: 700;
+}
+
+/* ------------------------------------------ */
+/* CODE */
+/* ------------------------------------------ */
+
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #0054D1;
+    background-color: #eeeeee;
+    border-radius: 4px;
+}
+
+pre {
+  background-color:#eee;
+  overflow:auto;
+  margin:0 0 1em;
+  padding:.5em 1em;
+}
+
+pre code,
+pre .line-number {
+  /* Ukuran line-height antara teks di dalam tag <code> dan <span class="line-number"> harus sama! */
+  font:normal normal 12px/14px "Courier New",Courier,Monospace;
+  color:black;
+  display:block;
+}
+
+pre .line-number {
+  float:left;
+  margin:0 1em 0 -1em;
+  border-right:1px solid;
+  text-align:right;
+}
+
+pre .line-number span {
+  display:block;
+  padding:0 .5em 0 1em;
+}
+
+pre .cl {
+  display:block;
+  clear:both;
+}
+
+/* ------------------------------------------ */
+/* LISTS */
+/* ------------------------------------------ */
+
+ul.unordered-list { 
+	list-style: circle; 
+	line-height:1.6; 
+	padding:0px 15px; 
+	margin-left:5px; 
+	text-align:left !important; 
+	padding-top:10px
+}
+
+ul.unordered-list li {
+	list-style-type: disc;
+}
+
+ul.unordered-list ul { 
+	list-style:disc; 
+	padding:0px 25px; 
+}
+ol { 
+	list-style:decimal; 
+	line-height:1.6; 
+	padding:0px 15px; 
+	margin-left:5px; 
+}

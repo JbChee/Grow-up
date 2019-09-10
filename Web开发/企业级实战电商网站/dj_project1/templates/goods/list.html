@@ -1,0 +1,156 @@
+{% extends 'goods/index.html' %}
+{% load static from staticfiles %}
+
+{% block unique_js %}
+
+    <script>
+        $(function () {
+
+            $('.add_goods').click(function () {
+                var now_count = $('#show_count').html();
+                console.log(now_count);
+                var $good_id = $(this).attr('name');
+                var dict = {'count':1, 'goods_id': $good_id};
+                console.log(dict);
+
+                $.ajax({
+                    url: '/add_goods/',
+                    dataType: 'json',
+                    type: 'POST',
+                    data: dict,
+                }).done(function (data) {
+                    if (data.msg == 1) {
+                        $('#show_count').html(data.count);
+                        console.log('成功');
+                        {#window.location.reload();#}
+                        {#alert('加入成功')#}
+
+                    }
+                });
+
+            })
+
+        })
+    </script>
+
+{% endblock %}
+
+
+{% block goods_list %}
+    <div class="navbar_con">
+        <div class="navbar clearfix">
+            <div class="subnav_con fl">
+                <h1>全部商品分类</h1>
+                <span></span>
+                <ul class="subnav">
+                    {% for type_obj, class_name in zip_obj %}
+                        <li><a href="/g_list{{ type_obj.id }}/" class="{{ class_name }}">{{ type_obj.ttitle }}</a></li>
+
+                    {% endfor %}
+
+                </ul>
+            </div>
+            <ul class="navlist fl">
+                <li><a href="/">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="/">全部分类</a>
+        <span>></span>
+        <a href="#">{{ type_name }}</a>
+    </div>
+
+    <div class="main_wrap clearfix">
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for rm_good in recomment_goods %}
+                        <li>
+                            <a href="/detail{{ rm_good.id }}"><img src="/static/images/{{ rm_good.gpic }}"></a>
+                            <h4><a href="#">{{ rm_good.gtitle }}</a></h4>
+                            <div class="prize">￥{{ rm_good.gprice }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="r_wrap fr clearfix">
+            <div class="sort_bar">
+                <a href="?page={{ page.number }}&sort=1" {% if sort == '1' %}class="active"{% endif %}>默认</a>
+                <a href="?page={{ page.number }}&sort=2" {% if sort == '2' %}class="active"{% endif %}>价格</a>
+                <a href="?page={{ page.number }}&sort=3" {% if sort == '3' %}class="active"{% endif %}>人气</a>
+            </div>
+
+
+            <ul class="goods_type_list clearfix">
+                {% for obj_good in page.object_list %}
+                    <li>
+                        <a href="/detail{{ obj_good.id }}/"><img src="/static/images/{{ obj_good.gpic }}"></a>
+                        <h4><a href="/detail{{ obj_good.id }}/">{{ obj_good.gtitle }}</a></h4>
+                        <div class="operate">
+                            <span class="prize">￥{{ obj_good.gprice }}</span>
+                            <span class="unit">{{ obj_good.gprice }}/{{ obj_good.gunit }}</span>
+                            <a href="#" class="add_goods" name='{{ obj_good.id }}' title="加入购物车"></a>
+                        </div>
+                    </li>
+                {% endfor %}
+
+
+            </ul>
+
+            <div class="pagenation">
+                {#                <a href="?page={{ page.previous_page_number }}">上一页</a>#}
+                {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}&sort={{ sort }}">
+                        <span>上一页</span>
+                    </a>
+                {% else %}
+                    <a href="#">
+                        <span>上一页</span>
+                    </a>
+
+                {% endif %}
+
+                {#页数#}
+                {% for i in page_range %}  {#一个整体是一个paginator对象，点击每一页又是一个page对象#}
+                    {# i 如果等于 当前页#}
+                    {% if page.number == i %}
+                        <a href="?page={{ i }}&sort={{ sort }}" class="active">{{ i }}</a>
+                    {% else %}
+                        {% if i == '...' %}
+                            <a href="#"><span>...</span></a>
+                        {% else %}
+                            <a href="?page={{ i }}&sort={{ sort }}">{{ i }}</a>
+                        {% endif %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {#下一页#}
+                {% if page.has_next %}
+                    <a href="?page={{ page.next_page_number }}&sort={{ sort }}">
+                        <span>下一页</span>
+                    </a>
+
+                {% else %}
+                    <a href="#">
+                        <span>下一页</span>
+                    </a>
+                {% endif %}
+
+                {#                <a href="#">下一页></a>#}
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

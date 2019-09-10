@@ -1,0 +1,207 @@
+{% extends 'bass.html' %}
+{% load static from staticfiles %}
+
+{% block add %}
+    <script>
+        if ('{{ request.session.username }}') {
+            $.ajax({
+                url: '/count/',
+                dataType: 'json',
+                type: 'POST',
+
+            }).done(function (data) {
+                $('#show_count').html(data.count)
+            })
+        }
+        else {
+            $('#show_count').html('0');
+        }
+    </script>
+{% endblock %}
+
+{% block search_button %}
+    <style>
+        #suggestions {
+            width: 470px;
+        {#border: 1px solid #d8d8d8;#} position: fixed;
+            top: 104px;
+            z-index: 99999;
+        }
+
+        #suggestions ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #suggestions li {
+            font-size: 14px;
+            height: 18px;
+            line-height: 18px;
+            padding: 6px 14px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $('.input_text').bind('input propertychange', function () {
+                $('.baidu_list').html(' ');
+                var $val = $(this).val();
+                if ($val == '') {
+                    return;
+                }
+
+                $.ajax({
+                    url: 'https://www.baidu.com/sugrec?',
+                    type: 'GET',
+                    dataType: 'jsonp',
+                    data: {
+                        pre: "1",
+                        p: "3",
+                        ie: "utf-8",
+                        json: "1",
+                        prod: "pc",
+                        from: "pc_web",
+                        sugsid: "1427,21078,29523,29519,29099,29567,28830,29221,26350,29460,29588",
+                        wd: $val,
+                        req: "2",
+                        csor: "1",
+                    }
+                }).done(function (data) {
+                    console.log(data.g);
+                    for (var i = data.g.length - 1; i > 0; i--) {
+                        var $li = '<li>' + data.g[i].q + '</li>';
+                        $('.baidu_list').append($li);
+                    }
+                    ;
+                    $('.baidu_list').show();
+                }).fail(function () {
+                    alert('服务器超时！')
+                })
+            });
+
+            {#点击搜索按钮#}
+            var searchBotton = $('.input_btn');  //搜索按钮
+            var searchInput = $('.input_text'); //输入框
+            searchBotton.click(function () {
+                var text = $.trim(searchInput.val());
+                if (text) {
+                    window.location.href = 'https://www.baidu.com/s?wd=' + text
+                }
+            });
+            //点击词条搜索
+            $('.baidu_list').delegate('li', 'click', function () {
+                var text = $(this).html();
+                window.location.href = 'https://www.baidu.com/s?wd=' + text
+            });
+
+        })
+
+    </script>
+{% endblock %}
+
+
+{% block unique_js %}
+
+{% endblock %}
+
+
+
+{% block search %}
+
+    <div class="search_bar clearfix">
+        <a href="/" class="logo fl"><img src="{% static 'images/logo.png' %}"></a>
+        <div class="search_con fl">
+
+            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+            <input type="button" class="input_btn fr" name="" value="搜索">
+            <div id="suggestions">
+                <ul class="baidu_list">
+
+                </ul>
+            </div>
+        </div>
+        <div class="guest_cart fr">
+            <a href="/cart/" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">1</div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block user_unique %}
+    {% block goods_list %}
+        <div class="navbar_con">
+            <div class="navbar">
+                <h1 class="fl">全部商品分类</h1>
+                <ul class="navlist fl">
+                    <li><a href="/">首页</a></li>
+                    {% for gtype in g_type %}
+                        <li class="interval">|</li>
+                        <li><a href="">{{ gtype }}</a></li>
+                    {% endfor %}
+                    <li class="interval">|</li>
+                    <li><a href="">抽奖</a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="center_con clearfix">
+            <ul class="subnav fl">
+                <li><a href="#model01" class="fruit">新鲜水果</a></li>
+                <li><a href="#model02" class="seafood">海鲜水产</a></li>
+                <li><a href="#model03" class="meet">猪牛羊肉</a></li>
+                <li><a href="#model04" class="egg">禽类蛋品</a></li>
+                <li><a href="#model05" class="vegetables">新鲜蔬菜</a></li>
+                <li><a href="#model06" class="ice">速冻食品</a></li>
+            </ul>
+            <div class="slide fl">
+                <ul class="slide_pics">
+                    <li><img src="{% static 'images/slide01.jpg' %}" alt="幻灯片"></li>
+                    <li><img src="{% static 'images/slide02.jpg' %}" alt="幻灯片"></li>
+                    <li><img src="{% static 'images/slide03.jpg' %}" alt="幻灯片"></li>
+                    <li><img src="{% static 'images/slide04.jpg' %}" alt="幻灯片"></li>
+                </ul>
+                <div class="prev"></div>
+                <div class="next"></div>
+                <ul class="points"></ul>
+            </div>
+            <div class="adv fl clearfix">
+                <a href="#"><img src="/static/images/adv01.jpg"></a>
+                <a href="#"><img src="/static/images/adv02.jpg"></a>
+            </div>
+        </div>
+
+        {% for gtype, id_goods in goods_list %}
+            <div class="list_model">
+                <div class="list_title clearfix">
+                    <h3 class="fl" id="model0{{ forloop.counter }}">{{ gtype.ttitle }}</h3>
+                    <div class="subtitle fl">
+                        <span>|</span>
+                        <a href="#">鲜芒</a>
+                        <a href="#">加州提子</a>
+                        <a href="#">亚马逊牛油果</a>
+                    </div>
+                    <a href="/g_list{{ gtype.id }}/" class="goods_more fr" id="fruit_more">查看更多 ></a>
+                </div>
+
+                <div class="goods_con clearfix">
+                    <div class="goods_banner fl"><img src="/static/images/banner0{{ forloop.counter }}.jpg"></div>
+                    <ul class="goods_list fl">
+
+                        {% for good in id_goods %}
+                            <li>
+                                <h4><a href="#">{{ good.gtitle }}</a></h4>
+                                <a href="/detail{{ good.id }}/"><img src="/static/images/{{ good.gpic }}"></a>
+                                <div class="prize">¥ {{ good.gprice }}</div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+
+    {% endblock %}
+
+{% endblock %}

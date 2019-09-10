@@ -1,0 +1,86 @@
+{% load static from staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/slide.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+    {% block add %}
+
+    {% endblock %}
+    {% block search_button %}
+
+    {% endblock %}
+    {% block unique_js %}
+
+    {% endblock %}
+</head>
+<body>
+
+{% block top %}
+
+<div class="header_con">
+    <div class="header">
+        <div class="welcome fl">欢迎来到商城</div>
+        <div class="fr">
+
+             {% if request.session.username %}
+                <div class="login_info fl">
+                    欢迎用户：<em>{{ request.session.username }}</em>
+                    <a href="/delete_cookie/">退出</a>
+                </div>
+            {% else %}
+                <div class="login_btn fl">
+                    <a href="/login/">登录</a>
+                    <span>|</span>
+                    <a href="/register">注册</a>
+                </div>
+            {% endif %}
+
+            <div class="user_link fl">
+                <span>|</span>
+                <a href="/user_center_info/">用户中心</a>
+                <span>|</span>
+                <a href="/cart/">我的购物车</a>
+                <span>|</span>
+                <a href="/user_center_order/">我的订单</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block search %}
+{% endblock %}
+
+{% block user_unique %}
+{% endblock %}
+
+{% block bottom %}
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+    </div>
+    <p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+    <p>电话：010-****888 京ICP备*******8号</p>
+</div>
+{% endblock %}
+
+
+<script type="text/javascript" src="{% static 'js/slide.js' %}"></script>
+</body>
+</html>

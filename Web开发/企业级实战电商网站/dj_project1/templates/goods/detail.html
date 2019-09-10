@@ -1,0 +1,186 @@
+{% extends 'goods/index.html' %}
+{% load static from staticfiles %}
+
+{% block unique_js %}
+    <script>
+        //定义动画函数
+        $(function () {
+            function add_ok(count) {
+                var $add_x = $('#add_cart').offset().top;
+                var $add_y = $('#add_cart').offset().left;
+
+                var $to_x = $('#show_count').offset().top;
+                var $to_y = $('#show_count').offset().left;
+                console.log($add_x);
+
+                $('.add_jump').css({left: $add_y + 80, top: $add_x + 10, display: 'block'})
+                    .stop()
+                    .animate({
+                            left: $to_y + 7,
+                            top: $to_x + 7
+                        }, 'fast', function () {
+                            $('.add_jump').fadeOut('fast', function () {
+                                $('#show_count').html(count)
+                            })
+                        }
+                    )
+            }
+
+            $(function () {
+                //点击事件
+                $('.add').click(function () {
+                    var num = parseInt($('.num_show').val());
+                    num++;
+                    $('.num_show').val(num).blur();
+                });
+                $('.minus').click(function () {
+                    var num = parseInt($('.num_show').val());
+                    num--;
+                    $('.num_show').val(num).blur();
+                });
+
+                //失去焦点时，判断数据是否合法
+                $('.num_show').blur(function () {
+                    var num = parseInt($(this).val());
+                    if (isNaN(num) || num <= 1) {
+                        num = 1;
+                    }
+                    if (num >={{ good_obj.gkucun }}) {
+                        num = '{{ good_obj.gkucun }}'
+                    }
+                    //计算价格
+                    $(this).val(num);
+                    var price = parseFloat($('.show_pirze em').text());
+                    var total = price * num;
+                    $('.total em').html(total.toFixed(2) + '元')
+                });
+
+                // 构建数据
+                num = $('.num_show').val();
+                var dict = {'count': num, 'goods_id': '{{ good_obj.id }}'};
+
+                $('#add_cart').click(function () {
+                    $.ajax({
+                        url: '/add_goods/',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: dict,
+                    }).done(function (data) {
+                        if (data.msg == 1) {
+                            add_ok(data.count);
+                            console.log('成功');
+                        }
+                        {#$('#show_count').html(data.count);#}
+
+                        {#window.location.reload();#}
+                    });
+                });
+
+
+            });
+        });
+
+
+    </script>
+
+{% endblock %}
+
+
+
+{% block goods_list %}
+    <div class="navbar_con">
+        <div class="navbar clearfix">
+            <div class="subnav_con fl">
+                <h1>全部商品分类</h1>
+                <span></span>
+                <ul class="subnav">
+                    {% for type_obj,class_name in zip_obj %}
+
+                        <li><a href="/g_list{{ type_obj.id }}/" class="{{ class_name }}">{{ type_obj.ttitle }}</a></li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+            <ul class="navlist fl">
+                <li><a href="/">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="/">全部分类</a>
+        <span>></span>
+        <a href="/g_list{{ good_obj.gtype_id }}/">{{ good_obj.gtype }}</a>
+        <span>></span>
+        <a href="#">商品详情</a>
+    </div>
+
+    <div class="goods_detail_con clearfix">
+        <div class="goods_detail_pic fl"><img src="/static/images/{{ good_obj.gpic }}"></div>
+
+        <div class="goods_detail_list fr">
+            <h3>{{ good_obj.gtitle }}</h3>
+            <p>{{ good_obj.gjianjie }}</p>
+            <div class="prize_bar">
+                <span class="show_pirze">¥<em>{{ good_obj.gprice }}</em></span>
+                <span class="show_unit">单  位：{{ good_obj.gunit }}</span>
+            </div>
+            <div class="goods_num clearfix">
+                <div class="num_name fl">数 量：</div>
+                <div class="num_add fl">
+                    <input type="text" class="num_show fl" value="1">
+                    <a href="javascript:;" class="add fr">+</a>
+                    <a href="javascript:;" class="minus fr">-</a>
+                </div>
+            </div>
+            <div class="total">总价：<em>16.80元</em></div>
+            <div class="operate_btn">
+                <a href="javascript:;" class="buy_btn">立即购买</a>
+                <a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="main_wrap clearfix">
+        <div class="l_wrap fl clearfix">
+            <div class="new_goods">
+                <h3>新品推荐</h3>
+                <ul>
+                    {% for rm_good in rm_goods %}
+                        <li>
+                            <a href="/detail{{ rm_good.id }}"><img src="/static/images/{{ rm_good.gpic }}"></a>
+                            <h4><a href="/detail{{ rm_good.id }}/">{{ rm_good.gtitle }}</a></h4>
+                            <div class="prize">￥{{ rm_good.gprice }}</div>
+                        </li>
+
+
+                    {% endfor %}
+
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="r_wrap fr clearfix">
+            <ul class="detail_tab clearfix">
+                <li class="active">商品介绍</li>
+                <li>评论</li>
+            </ul>
+
+            <div class="tab_content">
+                <dl>
+                    <dt>商品详情：</dt>
+                    <dd>{{ good_obj.gcontent|safe }}</dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
+    <div class="add_jump">dfasfasdf</div>
+
+{% endblock %}
