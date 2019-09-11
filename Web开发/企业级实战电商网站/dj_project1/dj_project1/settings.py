@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0_mg94w!rbj3r0i(yp9+txcn#f)!a*2)md650&!r+$+f97ier#'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'dj_project1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Djproject1',
-        'USER':'root',
-        'PASSWORD':'123456',
+        'NAME': '',
+        'USER':'',
+        'PASSWORD':'',
         'HOST':'localhost',
         'PORT':'3306',
         }
@@ -109,6 +109,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
-
-ALIPAY_APPID = "2016101300676933"
-ALIPAY_URL = "https://openapi.alipaydev.com/gateway.do"
